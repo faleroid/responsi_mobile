@@ -5,6 +5,8 @@ import 'viewmodels/weather_viewmodel.dart';
 import 'viewmodels/location_viewmodel.dart';
 import 'views/home_screen.dart';
 
+import 'viewmodels/favorite_viewmodel.dart';
+
 void main() {
   runApp(const WeatherApp());
 }
@@ -18,6 +20,9 @@ class WeatherApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => WeatherViewModel()),
         ChangeNotifierProvider(create: (_) => LocationViewModel()),
+        ChangeNotifierProvider(
+          create: (_) => FavoriteViewModel()..loadFavorites(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

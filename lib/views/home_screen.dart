@@ -7,6 +7,7 @@ import '../widgets/common/error_view.dart';
 import '../widgets/weather/weather_content.dart';
 
 import 'search_location_screen.dart';
+import 'favorite_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,8 +36,17 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     try {
-      final locationViewModel = context.read<LocationViewModel>();
+      final weatherViewModel = context.read<WeatherViewModel>();
+      final savedLocation = await weatherViewModel.getLastLocation();
 
+      if (!mounted) return;
+
+      if (savedLocation != null) {
+        await weatherViewModel.fetchWeather(savedLocation);
+        return;
+      }
+
+      final locationViewModel = context.read<LocationViewModel>();
       await locationViewModel.searchLocations('Purwokerto');
 
       if (!mounted) return;
@@ -46,8 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (locations.isEmpty) {
         setState(() {
           _locationError =
-              locationViewModel.errorMessage ??
-              'Lokasi Purwokerto tidak ditemukan.';
+              locationViewModel.errorMessage ?? 'Lokasi tidak ditemukan.';
         });
         return;
       }
@@ -57,19 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
         orElse: () => locations.first,
       );
 
-      await context.read<WeatherViewModel>().fetchWeather(location);
+      await weatherViewModel.fetchWeather(location);
     } catch (error) {
       if (!mounted) return;
 
       setState(() {
         _locationError = error.toString();
       });
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isFindingLocation = false;
-        });
-      }
     }
   }
 
@@ -107,6 +110,16 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: _refreshWeather,
             icon: const Icon(Icons.refresh),
             tooltip: 'Refresh cuaca',
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const FavoriteScreen()),
+              );
+            },
+            icon: const Icon(Icons.favorite_border),
+            tooltip: 'Lokasi favorit',
           ),
         ],
       ),

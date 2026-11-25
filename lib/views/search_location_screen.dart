@@ -6,6 +6,8 @@ import '../viewmodels/location_viewmodel.dart';
 import '../viewmodels/weather_viewmodel.dart';
 import '../widgets/location/location_result_tile.dart';
 
+import '../viewmodels/favorite_viewmodel.dart';
+
 class SearchLocationScreen extends StatefulWidget {
   const SearchLocationScreen({super.key});
 
@@ -131,9 +133,35 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
                     itemBuilder: (context, index) {
                       final location = viewModel.locations[index];
 
-                      return LocationResultTile(
-                        location: location,
-                        onTap: () => _selectLocation(location),
+                      return Consumer<FavoriteViewModel>(
+                        builder: (context, favoriteViewModel, child) {
+                          final isFavorite = favoriteViewModel.isFavorite(
+                            location,
+                          );
+
+                          return LocationResultTile(
+                            location: location,
+                            isFavorite: isFavorite,
+                            onTap: () => _selectLocation(location),
+                            onFavoriteTap: () async {
+                              try {
+                                await favoriteViewModel.toggleFavorite(
+                                  location,
+                                );
+                              } catch (error) {
+                                if (!context.mounted) return;
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Gagal menyimpan perubahan favorit.',
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                          );
+                        },
                       );
                     },
                   );

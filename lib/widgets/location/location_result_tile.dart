@@ -5,11 +5,15 @@ import '../../models/location_model.dart';
 class LocationResultTile extends StatelessWidget {
   final LocationModel location;
   final VoidCallback onTap;
+  final bool isFavorite;
+  final VoidCallback onFavoriteTap;
 
   const LocationResultTile({
     super.key,
     required this.location,
     required this.onTap,
+    required this.isFavorite,
+    required this.onFavoriteTap,
   });
 
   @override
@@ -24,8 +28,15 @@ class LocationResultTile extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Text(location.fullAddress),
-        trailing: const Icon(Icons.chevron_right),
         onTap: onTap,
+        trailing: IconButton(
+          onPressed: onFavoriteTap,
+          icon: Icon(
+            isFavorite ? Icons.favorite : Icons.favorite_border,
+            color: isFavorite ? Colors.red : null,
+          ),
+          tooltip: isFavorite ? 'Hapus dari favorit' : 'Tambahkan ke favorit',
+        ),
       ),
     );
   }
