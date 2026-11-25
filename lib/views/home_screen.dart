@@ -6,6 +6,8 @@ import '../viewmodels/weather_viewmodel.dart';
 import '../widgets/common/error_view.dart';
 import '../widgets/weather/weather_content.dart';
 
+import 'search_location_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -91,6 +93,16 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SearchLocationScreen()),
+              );
+            },
+            icon: const Icon(Icons.search),
+            tooltip: 'Cari lokasi',
+          ),
           IconButton(
             onPressed: _refreshWeather,
             icon: const Icon(Icons.refresh),
