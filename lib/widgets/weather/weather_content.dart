@@ -1,0 +1,101 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../models/weather_model.dart';
+import '../../viewmodels/weather_viewmodel.dart';
+import 'current_weather_card.dart';
+import 'forecast_tile.dart';
+import 'weather_detail_card.dart';
+
+class WeatherContent extends StatelessWidget {
+  final WeatherModel weather;
+  final String cityName;
+  final String fullAddress;
+
+  const WeatherContent({
+    super.key,
+    required this.weather,
+    required this.cityName,
+    required this.fullAddress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        final viewModel = context.read<WeatherViewModel>();
+        final location = viewModel.selectedLocation;
+
+        if (location != null) {
+          await viewModel.fetchWeather(location);
+        }
+      },
+      child: ListView(
+        padding: const EdgeInsets.all(20),
+        children: [
+          Text(
+            fullAddress,
+            style: Theme.of(context).textTheme.titleMedium,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+
+          CurrentWeatherCard(cityName: cityName, weather: weather),
+
+          const SizedBox(height: 24),
+
+          Text(
+            'Detail Cuaca',
+            style: Theme.of(context).textTheme.titleLarge
+                ?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+
+          GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 1.5,
+            children: [
+              WeatherDetailCard(
+                icon: Icons.thermostat,
+                title: 'Terasa Seperti',
+                value: '${weather.apparentTemperature.round()}°C',
+              ),
+              WeatherDetailCard(
+                icon: Icons.water_drop_outlined,
+                title: 'Kelembapan',
+                value: '${weather.humidity}%',
+              ),
+              WeatherDetailCard(
+                icon: Icons.grain,
+                title: 'Curah Hujan',
+                value: '${weather.precipitation} mm',
+              ),
+              WeatherDetailCard(
+                icon: Icons.air,
+                title: 'Kecepatan Angin',
+                value: '${weather.windSpeed} km/jam',
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 28),
+
+          Text(
+            'Prakiraan 7 Hari',
+            style: Theme.of(context).textTheme.titleLarge
+                ?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+
+          ...weather.forecasts.map(
+            (forecast) => ForecastTile(forecast: forecast),
+          ),
+        ],
+      ),
+    );
+  }
+}
