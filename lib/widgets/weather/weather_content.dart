@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/weather_model.dart';
@@ -31,24 +31,30 @@ class WeatherContent extends StatelessWidget {
         }
       },
       child: ListView(
-        padding: const EdgeInsets.all(20),
         children: [
-          Text(
-            fullAddress,
-            style: Theme.of(context).textTheme.titleMedium,
-            textAlign: TextAlign.center,
+          Align(
+            alignment: Alignment.center, // atau Alignment.centerLeft
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(39, 193, 193, 193),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(30),
+                ),
+              ),
+              child: Text(
+                fullAddress,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(fontWeight: FontWeight.w500),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ),
           const SizedBox(height: 24),
 
           CurrentWeatherCard(cityName: cityName, weather: weather),
-
-          const SizedBox(height: 24),
-
-          Text(
-            'Detail Cuaca',
-            style: Theme.of(context).textTheme.titleLarge
-                ?.copyWith(fontWeight: FontWeight.bold),
-          ),
           const SizedBox(height: 12),
 
           GridView.count(
@@ -84,11 +90,17 @@ class WeatherContent extends StatelessWidget {
 
           const SizedBox(height: 28),
 
-          Text(
-            'Prakiraan 7 Hari',
-            style: Theme.of(context).textTheme.titleLarge
-                ?.copyWith(fontWeight: FontWeight.bold),
+          Container(
+            padding: const EdgeInsets.only(left: 18),
+            child: Text(
+              'Prakiraan Cuaca',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.w500),
+            ),
           ),
+
           const SizedBox(height: 12),
 
           ...weather.forecasts.map(

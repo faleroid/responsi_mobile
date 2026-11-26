@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../core/utils/weather_code_helper.dart';
 import '../../models/forecast_model.dart';
@@ -34,9 +34,9 @@ class ForecastTile extends StatelessWidget {
         title: Text(dayName),
         subtitle: Text(WeatherCodeHelper.description(forecast.weatherCode)),
         trailing: Text(
-          '${forecast.temperatureMax.round()}° / '
+          '${forecast.temperatureMax.round()}°-'
           '${forecast.temperatureMin.round()}°',
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
         ),
       ),
     );

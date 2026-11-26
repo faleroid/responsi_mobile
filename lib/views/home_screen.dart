@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels/location_viewmodel.dart';
@@ -73,6 +73,12 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _locationError = error.toString();
       });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isFindingLocation = false;
+        });
+      }
     }
   }
 
@@ -92,8 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Weather App',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          'GetWeather',
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
         ),
         actions: [
           IconButton(

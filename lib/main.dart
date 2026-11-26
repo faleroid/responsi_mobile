@@ -3,9 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'viewmodels/weather_viewmodel.dart';
 import 'viewmodels/location_viewmodel.dart';
-import 'views/home_screen.dart';
-
 import 'viewmodels/favorite_viewmodel.dart';
+import 'views/home_screen.dart';
 
 void main() {
   runApp(const WeatherApp());

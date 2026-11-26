@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../core/utils/weather_code_helper.dart';
 import '../../models/weather_model.dart';
@@ -24,16 +24,17 @@ class CurrentWeatherCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
         children: [
-          Text(
-            cityName,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
+          Align(
+            child: Text(
+              cityName,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -48,7 +49,7 @@ class CurrentWeatherCard extends StatelessWidget {
             style: const TextStyle(
               color: Colors.white,
               fontSize: 64,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w500,
             ),
           ),
           Text(
